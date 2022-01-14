@@ -11,11 +11,11 @@ public class GuestbookActionFactory extends ActionFactory {
 	public Action getAction(String actionName) {
 		Action action = null;
 		
-		if("deleteform".equals(actionName)) {
+		if("deleteform".equals(actionName)) { //deleteform.jsp로 보냄
 			System.out.println("delet");
 			action=new DeleteFormAction();
 			
-		} else if("delete".equals(actionName)) {
+		} else if("delete".equals(actionName)) { //삭제 구현
 			action=new DeleteAction();
 			
 		} else if("insert".equals(actionName)) {
