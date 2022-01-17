@@ -24,7 +24,7 @@ public class DeleteAction implements Action {
 		vo.setPassword(password);                             
 		
 		new GuestbookDao().delete(vo);
-		MvcUtil.redirect("/mysite02/guestbook", request, response);
+		MvcUtil.redirect("/mysite02/guestbook", request, response); //redirect해야됨
 
 	}
 
