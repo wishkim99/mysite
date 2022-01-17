@@ -17,15 +17,19 @@
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="joinForm" method="post"
+				<form id="update-form" name="updateForm" method="post"
 					action="${pageContext.request.contextPath}/user">
-					<input type='hidden' name="a" value="join" /> <label
+					<input type='hidden' name="a" value="update" /> 
+					<input type='hidden' name="no" value="${authUser.no}" /> 
+					<label
 						class="block-label" for="name">이름</label> <input id="name"
-						name="name" type="text" value=""> <label
-						class="block-label" for="email">이메일</label> <input id="email"
-						name="email" type="text" value=""> <input type="button"
-						value="id 중복체크"> <label class="block-label">패스워드</label> <input
-						name="password" type="password" value="">
+						name="name" type="text" value="${authUser.name}">
+						
+					<label class="block-label" for="email">이메일</label> <input
+						id="email" name="email" type="text" value="${authUser.email}"> <input
+						
+						type="button" value="id 중복체크"> <label class="block-label">패스워드</label>
+					<input name="password" type="password" value="${authUser.password}">
 
 					<fieldset>
 						<legend>성별</legend>
@@ -34,13 +38,8 @@
 							name="gender" value="male">
 					</fieldset>
 
-					<fieldset>
-						<legend>약관동의</legend>
-						<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
-						<label>서비스 약관에 동의합니다.</label>
-					</fieldset>
 
-					<input type="submit" value="가입하기">
+					<input type="submit" value="수정하기">
 
 				</form>
 			</div>

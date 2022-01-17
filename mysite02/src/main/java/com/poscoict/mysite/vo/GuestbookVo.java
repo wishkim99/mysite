@@ -2,17 +2,17 @@ package com.poscoict.mysite.vo;
 
 public class GuestbookVo {
 
-	private int no;
+	private long no;
 	private String name;
 	private String password;
 	private String reg_date;
 	private String message;
 
-	public int getNo() {
+	public long getNo() {
 		return no;
 	}
 
-	public void setNo(int no) {
+	public void setNo(Long no) {
 		this.no = no;
 	}
 

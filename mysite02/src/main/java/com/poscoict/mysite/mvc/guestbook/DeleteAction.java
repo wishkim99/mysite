@@ -15,8 +15,8 @@ public class DeleteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int no = Integer.valueOf(request.getParameter("no"));
-		String password= (String)request.getParameter("password");
+		Long no =Long.parseLong(request.getParameter("no"));
+		String password= request.getParameter("password");
 
 		
 		GuestbookVo vo = new GuestbookVo();
@@ -24,7 +24,7 @@ public class DeleteAction implements Action {
 		vo.setPassword(password);                             
 		
 		new GuestbookDao().delete(vo);
-		MvcUtil.forward("guestbook/index", request, response);
+		MvcUtil.redirect("/mysite02/guestbook", request, response);
 
 	}
 
