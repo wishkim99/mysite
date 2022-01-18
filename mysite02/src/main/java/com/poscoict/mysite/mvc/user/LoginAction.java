@@ -31,7 +31,7 @@ public class LoginAction implements Action {
 		
 		//인증 처리(Session 처리)
 		HttpSession session=request.getSession(true); //있으면 주고 없으면 만듦
-		session.setAttribute("authUser", authUser);
+		session.setAttribute("authUser", authUser); //안건들이면 로그아웃될때까지 계속 유지
 		
 		MvcUtil.redirect(request.getContextPath(), request, response);
 	}

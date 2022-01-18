@@ -47,7 +47,7 @@ public class UserDao {
 		return result;
 	}
 
-	public UserVo findByEmailAndPassword(String email, String password) {
+	public UserVo findByEmailAndPassword(String email, String password) { 
 		UserVo result = null;
 
 		Connection conn = null;
@@ -68,10 +68,12 @@ public class UserDao {
 			if (rs.next()) {
 				Long no = rs.getLong(1);
 				String name = rs.getString(2);
-
+			
+				
 				result = new UserVo();
 				result.setNo(no);
 				result.setName(name);
+				result.setEmail(email); //사용하려고 뽑음(객체에 넣음)
 
 			}
 
@@ -108,7 +110,7 @@ public class UserDao {
 		try {
 			conn = getConnection();
 
-			if(vo.getPassword()==null) {
+			if(vo.getPassword().isEmpty()) {
 				
 				String sql = "update user set name=?, gender=? where no=? ";
 
