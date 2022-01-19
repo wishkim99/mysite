@@ -11,8 +11,6 @@ import java.util.List;
 import com.poscoict.mysite.vo.BoardVo;
 import com.poscoict.mysite.vo.GuestbookVo;
 
-
-
 public class BoardDao {
 
 	public boolean insert(BoardVo vo) {
@@ -24,7 +22,7 @@ public class BoardDao {
 			conn = getConnection();
 
 			String sql = "insert into board value(null, ?, ?, 0, (select g_no from (select ifnull(max(g_no)+1, 1) as g_no from board) as tmp), 1, 1, now(), ?)";
-		
+
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, vo.getTitle());
@@ -56,7 +54,7 @@ public class BoardDao {
 		return result;
 	}
 
-	public List<BoardVo> findAll() {
+	public List<BoardVo> findAll(String kwd) {
 		List<BoardVo> list = new ArrayList<>();
 		
 		Connection conn = null;
@@ -65,13 +63,26 @@ public class BoardDao {
 				
 		try {
 			conn = getConnection();
-
+			if(kwd==null) {
 			String sql = "select b.no, b.title, a.name, b.hit, b.contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, user_no"+
 					 " from user a, board b" +
 					" where a.no=b.user_no" +
 					" order by b.g_no desc, b.o_no asc";
-
+			
 			pstmt = conn.prepareStatement(sql);
+			}
+			else {
+			String sql = "select b.no, b.title, a.name, b.hit, b.contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, user_no"+
+			 " from user a, board b" +
+			" where a.no=b.user_no and title like ?"  +
+			" order by b.g_no desc, b.o_no asc";
+	
+			pstmt = conn.prepareStatement(sql); //물음표 넣을 때 필요
+			kwd='%'+kwd+'%';
+			pstmt.setString(1, kwd);
+			}
+			
+			
 			
 			rs = pstmt.executeQuery();
 
@@ -116,8 +127,8 @@ public class BoardDao {
 		
 		return list;
 	}
-	
-	public BoardVo findByNo(Long no) { 
+
+	public BoardVo findByNo(Long no) {
 		BoardVo result = null;
 
 		Connection conn = null;
@@ -131,17 +142,17 @@ public class BoardDao {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setLong(1, no); //첫번째 물음표에 no값 들어가게
-			
+			pstmt.setLong(1, no); // 첫번째 물음표에 no값 들어가게
+
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				
+
 				String title = rs.getString(1);
 				String contents = rs.getString(2);
 				int hit = rs.getInt(3);
 				String regDate = rs.getString(4);
-				long userNo=rs.getLong(5);
-				
+				long userNo = rs.getLong(5);
+
 				result = new BoardVo();
 				result.setTitle(title);
 				result.setContents(contents);
@@ -170,7 +181,7 @@ public class BoardDao {
 
 		return result;
 	}
-	
+
 	public boolean delete(BoardVo vo) {
 		boolean result = false;
 
@@ -178,35 +189,32 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
-			
-			String sql =
-					" delete" +
-					"   from board" +
-					"  where no=?";
+
+			String sql = " delete" + "   from board" + "  where no=?";
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setLong(1, vo.getNo());
 //			pstmt.setLong(2, vo.getUserNo());
-			
+
 			int count = pstmt.executeUpdate();
 			result = count == 1;
-			
+
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(pstmt != null) {
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(conn != null) {
+				if (conn != null) {
 					conn.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}		
-		
-		return result;		
+		}
+
+		return result;
 	}
 //	public boolean update(BoardVo vo) {
 //		boolean result = false;
@@ -277,11 +285,5 @@ public class BoardDao {
 
 		return conn;
 	}
-
-
-
-
-
-
 
 }

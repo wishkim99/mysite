@@ -16,9 +16,6 @@ public class BoardActionFactory extends ActionFactory {
 			action = new WriteFormAction();
 		} else if ("write".equals(actionName)) { // 글 쓰기
 			action = new WriteAction();
-		}else if ("deleteform".equals(actionName)) { // deleteform.jsp로 보냄
-			// System.out.println("delete");
-			action = new DeleteFormAction();
 		} else if ("delete".equals(actionName)) { // 삭제 구현
 			action = new DeleteAction();
 		} else if ("modify".equals(actionName)) { // 글 수정

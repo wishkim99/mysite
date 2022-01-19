@@ -19,7 +19,7 @@
 			<div id="board">
 				<form id="search_form"
 					action="${pageContext.request.contextPath}/board" method="post">
-					<input type='hidden' name="a" value="view" />
+					<input type='hidden' name="a" value="list" />
 					<input type="text" id="kwd" name="kwd" value=""> 
 					<input type="submit" value="찾기">
 				</form>
