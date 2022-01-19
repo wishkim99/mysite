@@ -36,8 +36,6 @@
 
 						<c:set var="count" value="${fn:length(list)}" />
 						<c:forEach items="${list}" var="vo" varStatus="status">
-							<br>
-
 							<tr>
 								<td>${count-status.index}</td>
 								<td style="text-align: left; padding-left: 0px"><a

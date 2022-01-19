@@ -13,7 +13,7 @@ public class DeleteFormAction implements Action { //비밀번호 확인
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		MvcUtil.forward("board/list", request, response);
+		MvcUtil.forward("guestbook/deleteform", request, response);
 	}
 
 }
