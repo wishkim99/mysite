@@ -17,23 +17,15 @@ public class viewAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-//		String title = request.getParameter("title");
-//		String contents = request.getParameter("contents");
-		Long no=Long.parseLong(request.getParameter("no"));
 
-//		BoardVo vo = new BoardVo();
-//		vo.setTitle(title);
-//		vo.setContents(contents);
-//		vo.setNo(no);
-//
-//		new BoardDao().insert(vo);
-//		
-//		MvcUtil.redirect("/mysite02/board", request, response);
+		Long no=Long.parseLong(request.getParameter("no"));
+		//Long userNo=Long.parseLong(request.getParameter("userNo"));
+
 		
 //원래꺼
 		BoardVo vo = new BoardDao().findByNo(no);
 		request.setAttribute("vo", vo);
+	
 		
 //findByNo	
 //		Long no=Long.parseLong(request.getParameter("no"));
@@ -44,8 +36,7 @@ public class viewAction implements Action {
 		
 		//BoardVo vo=(BoardVo)request.getAttribute("list");
 		MvcUtil.forward("board/view", request, response);
-		//MvcUtil.redirect("/mysite02/board", request, response);
-		//MvcUtil.redirect(request.getContextPath() + "/board?a=view", request, response);
+		
 	}
 
 }

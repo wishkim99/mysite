@@ -1,22 +1,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="${pageContext.servletContext.contextPath }/assets/css/board.css" rel="stylesheet" type="text/css">
+<link
+	href="${pageContext.servletContext.contextPath }/assets/css/board.css"
+	rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div id="container">
-		<c:import url="/WEB-INF/views/includes/header.jsp"/>
+		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="${pageContext.request.contextPath}/board" method="post">
-					<input type='hidden' name="a" value="view"/> 
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form"
+					action="${pageContext.request.contextPath}/board" method="post">
+					<input type='hidden' name="a" value="view" />
+					<input type="text" id="kwd" name="kwd" value=""> 
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -27,30 +31,36 @@
 						<th>조회수</th>
 						<th>작성일</th>
 						<th>&nbsp;</th>
-					</tr>	
-				<tr>
-					
-					<c:set var="count" value="${fn:length(list)}" />		
-					<c:forEach items="${list}" var="vo" varStatus="status">	
-					<br>
-					
-						<tr>
-							<td>${vo.no}</td>
-							<td style="text-align:left; padding-left:0px"><a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a></td>
-							<td>${vo.userName}</td>
-							<td>${vo.hit}</td>
-						    <td>${vo.regDate}</td>
-							<td><a href="${pageContext.request.contextPath}/board?a=deleteform&no=${vo.no}"  class="del" style='background-image: url("${pageContext.servletContext.contextPath }/assets/images/recycle.png")'>삭제</a></td>
-						</tr>
-						<tr>
-							
-						</tr>
-					
+					</tr>
+					<tr>
 
-				</c:forEach>
-				
+						<c:set var="count" value="${fn:length(list)}" />
+						<c:forEach items="${list}" var="vo" varStatus="status">
+							<br>
+
+							<tr>
+								<td>${count-status.index}</td>
+								<td style="text-align: left; padding-left: 0px"><a
+									href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a></td>
+								<td>${vo.userName}</td>
+								<td>${vo.hit}</td>
+								<td>${vo.regDate}</td>
+								<c:if
+									test="${authUser.no eq vo.userNo && not empty authUser.no}">
+									<td><a
+										href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no}"
+										class="del"
+										style='background-image: url("${pageContext.servletContext.contextPath }/assets/images/recycle.png")'>삭제</a></td>
+								</c:if>
+							</tr>
+							<tr>
+
+							</tr>
+
+
+						</c:forEach>
 				</table>
-				
+
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
@@ -62,18 +72,21 @@
 						<li>5</li>
 						<li><a href="">▶</a></li>
 					</ul>
-				</div>					
+				</div>
 				<!-- pager 추가 -->
-				
-				<div class="bottom">
-					<a href="${pageContext.request.contextPath}/board?a=writeform" id="new-book">글쓰기</a>
-				</div>				
+				<c:if test="${not empty authUser.no}">
+					<div class="bottom">
+						<a href="${pageContext.request.contextPath}/board?a=writeform"
+							id="new-book">글쓰기</a>
+					</div>
+				</c:if>
+
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp">
-			<c:param name="menu" value="board"/>
+			<c:param name="menu" value="board" />
 		</c:import>
-		<c:import url="/WEB-INF/views/includes/footer.jsp"/>
+		<c:import url="/WEB-INF/views/includes/footer.jsp" />
 	</div>
 </body>
 </html>

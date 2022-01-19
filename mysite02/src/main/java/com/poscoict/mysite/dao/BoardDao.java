@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.poscoict.mysite.vo.BoardVo;
 import com.poscoict.mysite.vo.GuestbookVo;
-import com.poscoict.mysite.vo.UserVo;
+
 
 
 public class BoardDao {
@@ -23,16 +23,17 @@ public class BoardDao {
 		try {
 			conn = getConnection();
 
-			String sql = "insert into board values(null, ?, ?, ?, ?, ?, ?, now(), ?)";
+			String sql = "insert into board value(null, ?, ?, 0, (select g_no from (select ifnull(max(g_no)+1, 1) as g_no from board) as tmp), 1, 1, now(), ?)";
+		
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContents());
-			pstmt.setInt(3, vo.getHit());
-			pstmt.setInt(4, vo.getGroupNo());
-			pstmt.setInt(5, vo.getOrderNo());
-			pstmt.setInt(6, vo.getDepth());
-			pstmt.setLong(7, vo.getUserNo());
+//			pstmt.setInt(3, vo.getHit());
+//			pstmt.setInt(4, vo.getGroupNo());
+//			pstmt.setInt(5, vo.getOrderNo());
+//			pstmt.setInt(6, vo.getDepth());
+			pstmt.setLong(3, vo.getUserNo());
 
 			int count = pstmt.executeUpdate();
 			result = count == 1;
@@ -65,7 +66,7 @@ public class BoardDao {
 		try {
 			conn = getConnection();
 
-			String sql = "select b.no, b.title, a.name, b.hit, b.contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as reg_date"+
+			String sql = "select b.no, b.title, a.name, b.hit, b.contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, user_no"+
 					 " from user a, board b" +
 					" where a.no=b.user_no" +
 					" order by b.g_no desc, b.o_no asc";
@@ -81,6 +82,7 @@ public class BoardDao {
 				int hit = rs.getInt(4);
 				String contents = rs.getString(5);
 				String regDate = rs.getString(6);
+				long userNo = rs.getInt(7);
 				
 				BoardVo vo = new BoardVo();
 				vo.setNo(no);
@@ -89,6 +91,7 @@ public class BoardDao {
 				vo.setHit(hit);
 				vo.setContents(contents);
 				vo.setRegDate(regDate);
+				vo.setUserNo(userNo);
 				
 				list.add(vo);
 			}
@@ -124,21 +127,27 @@ public class BoardDao {
 		try {
 			conn = getConnection();
 
-			String sql = "select title, contents from board where no=?";
+			String sql = "select title, contents, hit, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, user_no from board where no=?";
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setLong(1, no);
+			pstmt.setLong(1, no); //첫번째 물음표에 no값 들어가게
 			
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
+				
 				String title = rs.getString(1);
 				String contents = rs.getString(2);
-			
+				int hit = rs.getInt(3);
+				String regDate = rs.getString(4);
+				long userNo=rs.getLong(5);
 				
 				result = new BoardVo();
 				result.setTitle(title);
 				result.setContents(contents);
+				result.setHit(hit);
+				result.setRegDate(regDate);
+				result.setUserNo(userNo);
 			}
 
 		} catch (SQLException e) {
@@ -160,6 +169,44 @@ public class BoardDao {
 		}
 
 		return result;
+	}
+	
+	public boolean delete(BoardVo vo) {
+		boolean result = false;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			
+			String sql =
+					" delete" +
+					"   from board" +
+					"  where no=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, vo.getNo());
+//			pstmt.setLong(2, vo.getUserNo());
+			
+			int count = pstmt.executeUpdate();
+			result = count == 1;
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		return result;		
 	}
 //	public boolean update(BoardVo vo) {
 //		boolean result = false;
