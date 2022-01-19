@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.poscoict.mysite.vo.BoardVo;
-import com.poscoict.mysite.vo.GuestbookVo;
 
 public class BoardDao {
 
@@ -216,62 +215,48 @@ public class BoardDao {
 
 		return result;
 	}
-//	public boolean update(BoardVo vo) {
-//		boolean result = false;
-//
-//		Connection conn = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//
-//		try {
-//			conn = getConnection();
-//
-//			if(vo.getPassword().isEmpty()) {
-//				
-//				String sql = "update user set name=?, gender=? where no=? ";
-//
-//				pstmt = conn.prepareStatement(sql);
-//
-//				pstmt.setString(1, vo.getName());
-//				pstmt.setString(2, vo.getGender());
-//				pstmt.setLong(3, vo.getNo());
-//				
-//				int count = pstmt.executeUpdate();
-//				result = count == 1;
-//
-//				
-//			}else {
-//				String sql = "update user set name=?, gender=?, password=? where no=? ";
-//
-//				pstmt = conn.prepareStatement(sql);
-//
-//				pstmt.setString(1, vo.getName());
-//				pstmt.setString(2, vo.getGender());
-//				pstmt.setString(3, vo.getPassword());
-//				pstmt.setLong(4, vo.getNo());
-//				
-//				int count = pstmt.executeUpdate();
-//				result = count == 1;
-//
-//			}
-//
-//		} catch (SQLException e) {
-//			System.out.println("error:" + e);
-//		} finally {
-//			try {
-//				if (pstmt != null) {
-//					pstmt.close();
-//				}
-//				if (conn != null) {
-//					conn.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		return result;
-//	}
+	public boolean update(BoardVo vo) {
+		boolean result = false;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+
+	
+				String sql = "update board set title=?, contents=? where no=? ";
+
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, vo.getTitle());
+				pstmt.setString(2, vo.getContents());
+				pstmt.setLong(3, vo.getNo());
+
+				
+				int count = pstmt.executeUpdate();
+				result = count == 1;
+
+		
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
 
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
@@ -285,5 +270,7 @@ public class BoardDao {
 
 		return conn;
 	}
+
+
 
 }

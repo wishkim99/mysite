@@ -18,7 +18,9 @@ public class BoardActionFactory extends ActionFactory {
 			action = new WriteAction();
 		} else if ("delete".equals(actionName)) { // 삭제 구현
 			action = new DeleteAction();
-		} else if ("modify".equals(actionName)) { // 글 수정
+		}else if ("modifyform".equals(actionName)) { // 글 수정
+			action = new modifyFormAction();
+		}else if ("modify".equals(actionName)) { // 글 수정
 			action = new modifyAction();
 		} else if ("view".equals(actionName)) { // 글 내용 보기
 			action = new viewAction();
