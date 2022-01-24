@@ -12,6 +12,67 @@ import com.poscoict.mysite.vo.BoardVo;
 
 public class BoardDao {
 
+	//페이징
+	public int pageNum(int writingNum) {
+		int num = 0;
+		BoardVo result = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "select count(no) from writing";
+
+			pstmt = conn.prepareStatement(sql);
+
+			//pstmt.setLong(1, no); // 첫번째 물음표에 no값 들어가게
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+
+				String title = rs.getString(1);
+				String contents = rs.getString(2);
+				int hit = rs.getInt(3);
+				String regDate = rs.getString(4);
+				long userNo = rs.getLong(5);
+
+				result = new BoardVo();
+				result.setTitle(title);
+				result.setContents(contents);
+				result.setHit(hit);
+				result.setRegDate(regDate);
+				result.setUserNo(userNo);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+			if(num % writingNum > 0) {
+			num = (num / writingNum) + 1;
+		} else {
+			num = num / writingNum;
+		}
+		return num;
+	}
+	
 	public boolean insert(BoardVo vo) {
 		boolean result = false;
 
