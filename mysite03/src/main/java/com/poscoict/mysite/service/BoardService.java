@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poscoict.mysite.repository.BoardRepository;
 import com.poscoict.mysite.vo.BoardVo;
@@ -27,7 +28,9 @@ class BoardService {
 	}
 	
 
-	public List<BoardVo> getMessageList(String kwd) {
+	public List<BoardVo> getMessageList( 
+			//검색기능 구현(필수 파라미터)
+			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
 		return boardRepository.findAll(kwd);
 	}
 	// 글보기
