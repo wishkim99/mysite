@@ -18,8 +18,7 @@ pageContext.setAttribute("newline", "\n");
 </head>
 <body>
 	<div id="container">
-		<input type='hidden' name="a" value="view" /> 
-		<input type='hidden' name="no" value="${vo.no}" /> 
+		
 		<div id="content">
 			<div id="board" class="board-form">
 				<table class="tbl-ex">
@@ -28,12 +27,12 @@ pageContext.setAttribute("newline", "\n");
 					</tr>
 					<tr>
 						<td class="label">제목</td>
-						<td>${vo.title}</td>
+						<td>${boardVo.title}</td>
 					</tr>
 					<tr>
 						<td class="label">내용</td>
 						<td>
-							<div class="view-content">${fn:replace(vo.contents, newline, "<br/>") }</div>
+							<div class="view-content">${fn:replace(boardVo.contents, newline, "<br/>") }</div>
 						</td>
 					</tr>
 				</table>
@@ -41,8 +40,8 @@ pageContext.setAttribute("newline", "\n");
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath}/board">글목록</a>
 	
-					<c:if test="${authUser.no eq vo.userNo && not empty authUser.no}">
-						<a href="${pageContext.request.contextPath}/board?a=modifyform&no=${vo.no}">글수정</a>
+					<c:if test="${authUser.no eq boardVo.userNo && not empty authUser.no}">
+						<a href="${pageContext.request.contextPath}/board/modifyform/${boardVo.no}">글수정</a>
 					</c:if>
 				
 				</div>

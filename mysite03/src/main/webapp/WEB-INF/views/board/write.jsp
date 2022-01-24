@@ -21,9 +21,8 @@ pageContext.setAttribute("newline", "\n");
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write">
 					<input type='hidden' name='userNo' value="${authUser.no}">
-					<input type='hidden' name='a' value="write">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>

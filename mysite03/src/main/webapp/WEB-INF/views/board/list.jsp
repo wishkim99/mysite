@@ -39,14 +39,14 @@
 							<tr>
 								<td>${count-status.index}</td>
 								<td style="text-align: left; padding-left: 0px"><a
-									href="${pageContext.request.contextPath}/board?a=view&no=${vo.no}">${vo.title}</a></td>
+									href="${pageContext.request.contextPath}/board/view/${vo.no}">${vo.title}</a></td>
 								<td>${vo.userName}</td>
 								<td>${vo.hit}</td>
 								<td>${vo.regDate}</td>
 								<c:if
 									test="${authUser.no eq vo.userNo && not empty authUser.no}">
 									<td><a
-										href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no}"
+										href="${pageContext.request.contextPath}/board/delete?no=${vo.no}"
 										class="del"
 										style='background-image: url("${pageContext.servletContext.contextPath }/assets/images/recycle.png")'>삭제</a></td>
 								</c:if>
@@ -74,7 +74,7 @@
 				<!-- pager 추가 -->
 				<c:if test="${not empty authUser.no}">
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath}/board?a=writeform"
+						<a href="${pageContext.request.contextPath}/board/writeform"
 							id="new-book">글쓰기</a>
 					</div>
 				</c:if>
