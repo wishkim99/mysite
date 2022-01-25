@@ -13,12 +13,13 @@
 	</properties>		
 	
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+		<!-- JSTL -->	
 		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+		    <groupId>jstl</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
 		</dependency>
+	
 		<!-- servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
