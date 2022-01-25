@@ -44,7 +44,7 @@
 								<td>${vo.hit}</td>
 								<td>${vo.regDate}</td>
 								<c:if
-									test="${authUser.no eq vo.userNo && not empty authUser.no}">
+									test="${authUser.no eq vo.userNo && not empty authUser}">
 									<td><a
 										href="${pageContext.request.contextPath}/board/delete?no=${vo.no}"
 										class="del"

@@ -18,7 +18,7 @@
 	
 	<select id="findAll" resultType="boardvo">
 		<![CDATA[
-		     select b.no, b.title, a.name as userName, b.hit, b.contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as regDate, user_no from user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no asc
+		     select b.no, b.title, a.name as userName, b.hit, b.contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as regDate, b.user_no as userNo from user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no asc
 		]]>
 	</select>
 	

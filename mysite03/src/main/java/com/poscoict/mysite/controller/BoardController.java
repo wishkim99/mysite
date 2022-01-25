@@ -56,7 +56,6 @@ public class BoardController {
 	public String modify(BoardVo vo) {
 		boardService.updateContents(vo);
 		return "redirect:/board";
-
 	}
 	
 	//글 보기
