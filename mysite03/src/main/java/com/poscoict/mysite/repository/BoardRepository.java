@@ -144,9 +144,7 @@ public class BoardRepository {
 			kwd='%'+kwd+'%';
 			pstmt.setString(1, kwd);
 			}
-			
-			
-			
+	
 			rs = pstmt.executeQuery();
 
 			while(rs.next()) {

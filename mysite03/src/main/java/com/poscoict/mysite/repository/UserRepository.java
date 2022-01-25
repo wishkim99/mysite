@@ -6,13 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.poscoict.mysite.exception.UserRepositoryException;
 import com.poscoict.mysite.vo.UserVo;
 
 @Repository
 public class UserRepository {
-
+	
+	@Autowired
+	private DataSource dataSource;
+	
 	public boolean update(UserVo userVo) {
 		boolean result = false;
 
@@ -21,7 +28,7 @@ public class UserRepository {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			if(userVo.getPassword()==null ||"".equals(userVo.getPassword())) {
 				
@@ -71,7 +78,7 @@ public class UserRepository {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = " insert" + "   into user" + " values(null, ?, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
@@ -110,7 +117,7 @@ public class UserRepository {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = "select no, name, email, gender from user where no=?";
 
@@ -156,7 +163,7 @@ public class UserRepository {
 
 		return result;
 	}
-	public UserVo findByEmailAndPassword(String email, String password) { 
+	public UserVo findByEmailAndPassword(String email, String password) throws UserRepositoryException{ 
 		UserVo result = null;
 
 		Connection conn = null;
@@ -164,7 +171,7 @@ public class UserRepository {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = "select no, name from user where email=? and password=?";
 
@@ -187,42 +194,40 @@ public class UserRepository {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			throw new UserRepositoryException(e.toString());
 		} finally {
 			try {
-				if (rs != null) {
+				if(rs != null) {
 					rs.close();
 				}
-				if (pstmt != null) {
+				if(pstmt != null) {
 					pstmt.close();
 				}
-				if (conn != null) {
+				if(conn != null) {
 					conn.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
+		}		
 		
-
-
 		return result;
-	}
+	}	
 
 
 
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/webdb?characterEncoding=UTF-8&serverTimezone=UTC";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
-		}
-
-		return conn;
-	}
+//	private Connection getConnection() throws SQLException {
+//		Connection conn = null;
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//			String url = "jdbc:mysql://localhost:3306/webdb?characterEncoding=UTF-8&serverTimezone=UTC";
+//			conn = DriverManager.getConnection(url, "webdb", "webdb");
+//		} catch (ClassNotFoundException e) {
+//			System.out.println("드라이버 로딩 실패:" + e);
+//		}
+//
+//		return conn;
+//	}
 
 
 
