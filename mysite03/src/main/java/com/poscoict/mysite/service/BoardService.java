@@ -33,14 +33,14 @@ class BoardService {
 			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
 		return boardRepository.findAll(kwd);
 	}
+	
 	// 글보기
 	public BoardVo getContents(Long no) {
 		BoardVo boardVo = boardRepository.findByNo(no);
 		
 //		if(boardVo != null) {
 //			boardRepository.updateHit(no);
-//		}
-//		
+//		}	
 		return boardVo;
 	}
 

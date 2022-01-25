@@ -22,7 +22,11 @@ public class GuestbookService {
 		return guestbookRepository.delete(no, password);
 	}
 	
-	public Boolean addMessage(GuestbookVo vo) {
+//	public Boolean deleteMessage(GuestbookVo vo) {
+//		return guestbookRepository.delete(vo);
+//	}
+//	
+	public int addMessage(GuestbookVo vo) {//vo가 insert한 다음에 no값이 셋팅됨
 		return guestbookRepository.insert(vo);
 	}
 }

@@ -47,7 +47,7 @@ public class BoardController {
 	//글 수정
 	@RequestMapping(value="/modifyform/{no}", method=RequestMethod.GET) //먼저 form으로 가야함
 	public String modifyform(@PathVariable("no") Long no, Model model) {
-		BoardVo boardVo = boardService.getContents(no); //수정해야할 제목, 글 받아와야함
+		BoardVo boardVo = (BoardVo) boardService.getContents(no); //수정해야할 제목, 글 받아와야함
 		model.addAttribute("vo", boardVo);
 		return "board/modify";
 	} 
@@ -62,7 +62,7 @@ public class BoardController {
 	//글 보기
 	@RequestMapping(value="/view/{no}", method=RequestMethod.GET)
 	public String view(@PathVariable("no") Long no, Model model) {
-		BoardVo boardVo = boardService.getContents(no);
+		BoardVo boardVo = (BoardVo) boardService.getContents(no);
 		model.addAttribute("boardVo", boardVo);
 		
 		return "board/view";
