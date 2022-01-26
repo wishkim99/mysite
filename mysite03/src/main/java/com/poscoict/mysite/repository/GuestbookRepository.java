@@ -38,7 +38,7 @@ public class GuestbookRepository {
 	}	
 //	public GuestbookVo delete(Long no, String password) {
 //		Map<Long, String> map = new HashMap<>();
-//		map.put("no", no);
+//		map.put("no", no); //이름 값, 
 //		map.put("password", password);
 //
 //		return sqlSession.selectOne("guestbook.delete", map);

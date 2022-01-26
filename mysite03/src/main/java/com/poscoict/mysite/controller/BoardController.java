@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.poscoict.mysite.security.Auth;
 import com.poscoict.mysite.service.BoardService;
 import com.poscoict.mysite.vo.BoardVo;
 
@@ -32,6 +33,7 @@ public class BoardController {
 	}
 
 	//글쓰기
+	@Auth
 	@RequestMapping(value="/writeform", method=RequestMethod.GET) //먼저 form으로 가야함
 	public String writeform() {
 		return "board/write";
@@ -48,13 +50,15 @@ public class BoardController {
 	@RequestMapping(value="/modifyform/{no}", method=RequestMethod.GET) //먼저 form으로 가야함
 	public String modifyform(@PathVariable("no") Long no, Model model) {
 		BoardVo boardVo = (BoardVo) boardService.getContents(no); //수정해야할 제목, 글 받아와야함
-		model.addAttribute("vo", boardVo);
+		System.out.println(boardVo);
+		model.addAttribute("boardVo", boardVo);
 		return "board/modify";
 	} 
 	
 	@RequestMapping(value="/modify", method=RequestMethod.POST) //가서 modify 수행
 	public String modify(BoardVo vo) {
 		boardService.updateContents(vo);
+		System.out.println(vo);
 		return "redirect:/board";
 	}
 	

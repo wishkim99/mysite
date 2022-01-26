@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.poscoict.mysite.security.Auth;
 import com.poscoict.mysite.service.UserService;
 import com.poscoict.mysite.vo.UserVo;
 
@@ -36,42 +37,46 @@ public class UserController {
 		return "/user/joinsuccess";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET) // GET으로 들어오면 그냥 form만 보여주면 됨
+	@RequestMapping(value="/login")
 	public String login() {
 		return "user/login";
 	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST) // login.jsp안에서 사용
-	public String login(
-			HttpSession session, //원래대로면 filter로 빠져야됨 
-			@RequestParam(value="email", required=true, defaultValue=" " )String email,
-			@RequestParam(value="password", required=true, defaultValue=" " )String password,
-			Model model) {
-		//authUser가 null이 아니면 login처리
-		UserVo authUser=userService.getUser(email, password); //email과 password를 던져줌
+//	@RequestMapping(value = "/login", method = RequestMethod.GET) // GET으로 들어오면 그냥 form만 보여주면 됨
+//	public String login() {
+//		return "user/login";
+//	}
+//
+//	@RequestMapping(value = "/login", method = RequestMethod.POST) // login.jsp안에서 사용
+//	public String login(
+//			HttpSession session, //원래대로면 filter로 빠져야됨 
+//			@RequestParam(value="email", required=true, defaultValue=" " )String email,
+//			@RequestParam(value="password", required=true, defaultValue=" " )String password,
+//			Model model) {
+//		//authUser가 null이 아니면 login처리
+//		UserVo authUser=userService.getUser(email, password); //email과 password를 던져줌
+//	
+//		if(authUser==null) {
+//			model.addAttribute("result", "fail");
+//			model.addAttribute("email", email); //email을 넘겨옴
+//			return "user/login";
+//		}
+//		
 	
-		if(authUser==null) {
-			model.addAttribute("result", "fail");
-			model.addAttribute("email", email); //email을 넘겨옴
-			return "user/login";
-		}
-		
-	
-		/*인증처리*/
-		session.setAttribute("authUser", authUser);
-		return "redirect:/";
-	}
-	
+//		/*인증처리*/
+//		session.setAttribute("authUser", authUser);
+//		return "redirect:/";
+//	}
+//	
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) { 
 		session.removeAttribute("authUser");
 		session.invalidate(); //sessionId를 새걸로 바꿔줌
 		return "redirect:/";
 	}
-	//@Auth~~ //로그인이 되어있는지 아닌지 외부에서 확인
+	@Auth(role="ADMIN") //annotation은 정보를 가지고 있음, 로그인이 되어있는지 아닌지 외부에서 확인
 	@RequestMapping(value="/update", method=RequestMethod.GET)
 	public String update(HttpSession session, Model model) { //보안처리
-		/*access controller*/
+		/*access controller*/ //@Auth있으면 체크 안해도 됨
 		UserVo authUser=(UserVo)session.getAttribute("authUser"); //authUser 꺼냄
 		if(authUser==null) {
 			return "redirect:/"; 

@@ -50,8 +50,10 @@ class BoardService {
 	}
 
 	// 글 수정
-	public Boolean updateContents(BoardVo vo) {
+	public Boolean updateContents(BoardVo vo) { //넘겨줌
+		
 		return boardRepository.update(vo);
+		
 	}
 
 	// 글 삭제

@@ -42,14 +42,15 @@ public class BoardRepository {
 	
 	}
 
-//	public Boolean update(Long no) {
+//	public boolean update(Long no) {
 //		boardVo vo = new boardVo();
 //		vo.setNo(no);
 //		return update(vo);	
 //	}	
 	
 	public boolean update(BoardVo vo) {
-		int count = sqlSession.insert("board.update", vo);
+		int count = sqlSession.insert("board.modify", vo);
+		System.out.println(vo);
 		return count == 1;
 	}
 

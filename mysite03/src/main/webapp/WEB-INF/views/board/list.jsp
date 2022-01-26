@@ -52,10 +52,7 @@
 								</c:if>
 							</tr>
 							<tr>
-
 							</tr>
-
-
 						</c:forEach>
 				</table>
 
