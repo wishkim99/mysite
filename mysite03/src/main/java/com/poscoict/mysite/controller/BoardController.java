@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poscoict.mysite.security.Auth;
 import com.poscoict.mysite.service.BoardService;
@@ -26,8 +27,9 @@ public class BoardController {
 	BoardService boardService;
 	
 	@RequestMapping("")
-	public String index(Model model) {
-		List<BoardVo> list = boardService.getMessageList(null);
+	//jsp에서 여기로 보내서 kwd 실행-> 받아서 BoardService로 이동
+	public String index(@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd, Model model) {
+		List<BoardVo> list = boardService.getMessageList(kwd);
 		model.addAttribute("list", list);
 		return "board/list";
 	}
@@ -38,7 +40,7 @@ public class BoardController {
 	public String writeform() {
 		return "board/write";
 	}
-	
+	@Auth
 	@RequestMapping(value="/write", method=RequestMethod.POST) //가서 write수행
 	public String add(BoardVo vo) {
 		boardService.addContents(vo);
@@ -47,6 +49,7 @@ public class BoardController {
 	}
 	
 	//글 수정
+	@Auth
 	@RequestMapping(value="/modifyform/{no}", method=RequestMethod.GET) //먼저 form으로 가야함
 	public String modifyform(@PathVariable("no") Long no, Model model) {
 		BoardVo boardVo = (BoardVo) boardService.getContents(no); //수정해야할 제목, 글 받아와야함
@@ -55,6 +58,7 @@ public class BoardController {
 		return "board/modify";
 	} 
 	
+	@Auth
 	@RequestMapping(value="/modify", method=RequestMethod.POST) //가서 modify 수행
 	public String modify(BoardVo vo) {
 		boardService.updateContents(vo);

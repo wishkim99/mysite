@@ -28,9 +28,9 @@ class BoardService {
 	}
 	
 
-	public List<BoardVo> getMessageList( 
+	public List<BoardVo> getMessageList( String kwd
 			//검색기능 구현(필수 파라미터)
-			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
+			) {
 		return boardRepository.findAll(kwd);
 	}
 	

@@ -28,21 +28,20 @@ public class GuestbookRepository {
 
 	}
 
-	
-	public Boolean delete(Long no, String password) {
-		GuestbookVo vo = new GuestbookVo();
-		vo.setNo(no);
-		vo.setPassword(password);
-		
-		return delete(vo);	
-	}	
-//	public GuestbookVo delete(Long no, String password) {
-//		Map<Long, String> map = new HashMap<>();
-//		map.put("no", no); //이름 값, 
-//		map.put("password", password);
-//
-//		return sqlSession.selectOne("guestbook.delete", map);
-//	}
+//	public Boolean delete(Long no, String password) {
+//		GuestbookVo vo = new GuestbookVo();
+//		vo.setNo(no);
+//		vo.setPassword(password);
+//		
+//		return delete(vo);	
+//	}	
+	public int delete(Long no, String password) {
+		Map<String, Object> map = new HashMap<>(); // object는 string, long다 받음
+		map.put("no", no); // 이름 값,
+		map.put("password", password);
+
+		return sqlSession.delete("guestbook.delete", map);
+	}
 
 	public Boolean delete(GuestbookVo vo) {
 		int count = sqlSession.insert("guestbook.delete", vo);

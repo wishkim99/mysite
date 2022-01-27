@@ -24,7 +24,7 @@ public class BoardRepository {
 	public List<BoardVo> findAll(String kwd) {
 //		List<BoardVo> list = sqlSession.selectList("guestbook.findAll");
 //		return list;
-		return sqlSession.selectList("board.findAll");
+		return sqlSession.selectList("board.findAll", kwd);
 
 	}
 
@@ -50,7 +50,7 @@ public class BoardRepository {
 	
 	public boolean update(BoardVo vo) {
 		int count = sqlSession.insert("board.modify", vo);
-		System.out.println(vo);
+		//System.out.println(vo);
 		return count == 1;
 	}
 

@@ -22,7 +22,7 @@
 		]]>
 	</select>
 	
-	<delete id="delete" parameterType="guestbookvo">
+	<delete id="delete" parameterType="map">
 		<![CDATA[
 		 delete from guestbook where no=#{no} and password=#{password}
 		]]>

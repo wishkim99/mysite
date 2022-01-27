@@ -5,12 +5,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import com.poscoict.mysite.security.Auth;
+import com.poscoict.mysite.security.AuthUser;
 import com.poscoict.mysite.service.UserService;
 import com.poscoict.mysite.vo.UserVo;
 
@@ -73,38 +74,57 @@ public class UserController {
 		session.invalidate(); //sessionId를 새걸로 바꿔줌
 		return "redirect:/";
 	}
-	@Auth(role="ADMIN") //annotation은 정보를 가지고 있음, 로그인이 되어있는지 아닌지 외부에서 확인
+	
+	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(HttpSession session, Model model) { //보안처리
-		/*access controller*/ //@Auth있으면 체크 안해도 됨
-		UserVo authUser=(UserVo)session.getAttribute("authUser"); //authUser 꺼냄
-		if(authUser==null) {
-			return "redirect:/"; 
-		}
-		
-		Long userNo=authUser.getNo();
-		UserVo userVo=userService.getUser(userNo); //userVo로 끄집어냄(업데이트로 보내기위해)
+	public String update(@AuthUser UserVo authUser, Model model) {
+		Long userNo = authUser.getNo();
+		UserVo userVo = userService.getUser(userNo);
 		model.addAttribute("userVo", userVo);
 		
 		return "user/update";
 	}
 	
+	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(HttpSession session, UserVo userVo) { //보안처리
-		/*access controller*/
-		UserVo authUser=(UserVo)session.getAttribute("authUser"); //authUser 꺼냄
-		if(authUser==null) {
-			return "redirect:/"; 
-		}
-	
+	public String update(@AuthUser UserVo authUser, UserVo userVo) {
 		userVo.setNo(authUser.getNo());
 		userService.updateUser(userVo);
-		//return "redirect:/user/update"; //get방식
-		authUser=userService.getUser(userVo.getNo()); //업데이트 시켜줌
-		session.setAttribute("authUser", authUser);
-		return  "redirect:/"; 
 		
+		return "redirect:/user/update";
 	}
+//	//@Auth(role="ADMIN") //annotation은 정보를 가지고 있음, 로그인이 되어있는지 아닌지 외부에서 확인
+//	@RequestMapping(value="/update", method=RequestMethod.GET)
+//	public String update(HttpSession session, Model model) { //보안처리
+//		/*access controller*/ //@Auth있으면 체크 안해도 됨
+//		UserVo authUser=(UserVo)session.getAttribute("authUser"); //authUser 꺼냄
+//		if(authUser==null) {
+//			return "redirect:/"; 
+//		}
+//		
+//		Long userNo=authUser.getNo();
+//		UserVo userVo=userService.getUser(userNo); //userVo로 끄집어냄(업데이트로 보내기위해)
+//		model.addAttribute("userVo", userVo);
+//		
+//		return "user/update";
+//	}
+//	
+//	@RequestMapping(value="/update", method=RequestMethod.POST)
+//	public String update(HttpSession session, UserVo userVo) { //보안처리
+//		/*access controller*/
+//		UserVo authUser=(UserVo)session.getAttribute("authUser"); //authUser 꺼냄
+//		if(authUser==null) {
+//			return "redirect:/"; 
+//		}
+//	
+//		userVo.setNo(authUser.getNo());
+//		userService.updateUser(userVo);
+//		//return "redirect:/user/update"; //get방식
+//		authUser=userService.getUser(userVo.getNo()); //업데이트 시켜줌
+//		session.setAttribute("authUser", authUser);
+//		return  "redirect:/"; 
+//		
+//	}
 	
 //	@ExceptionHandler(Exception.class)
 //	public String UserControllerExceptionHandler() {
