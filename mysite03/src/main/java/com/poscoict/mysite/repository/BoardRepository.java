@@ -15,7 +15,8 @@ public class BoardRepository {
 	private SqlSession sqlSession;
 	
 	
-	public boolean insert(BoardVo vo) {
+	public boolean insert
+	(BoardVo vo) {
 		int count = sqlSession.insert("board.insert", vo);
 		return count == 1;
 	}
